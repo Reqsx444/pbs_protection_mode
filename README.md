@@ -1,2 +1,6 @@
-# pbs_protection_mode
-Script to enable protecion mode on first working day backup and remove protection mode if backups are older than 5 years
+# PBS Custom Protection Mode
+## Intruduction
+pbs_protection_mode is a Python automation script designed to manage snapshot protection on a Proxmox Backup Server (PBS). \
+It performs two main functions:
+- Automatically protects the first working day snapshot of each virtual machine
+- Removes protection from snapshots older than 5 years
