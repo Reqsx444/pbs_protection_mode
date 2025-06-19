@@ -18,7 +18,7 @@ def first_workday(year, month):
 
     return first_day
 
-backups_dir = '/storage2/proxmox-backup/vm/'
+backups_dir = '/data/proxmox-backup/vm/'
 machines = os.listdir(backups_dir)
 machines_to_remove = ['101', '102', '103', '104', '106', '5003', '5004', '5002', '5006', '911', '5005', '5001', '5021']
 for machine in machines_to_remove:
@@ -34,7 +34,7 @@ def set_protection(machine):
     if matching_files:
         for file in matching_files:
             snapshot_id = os.path.basename(file)
-            command = f'proxmox-backup-client snapshot protected update vm/{machine}/{snapshot_id} true --repository NAVIGATOR2'
+            command = f'proxmox-backup-client snapshot protected update vm/{machine}/{snapshot_id} true --repository XYZ'
             print(f"Running command: {command}")
             subprocess.run(command, shell=True)
             os.system(f'echo vm/{machine}/{snapshot_id} >> /root/protected_backups_list')
@@ -58,11 +58,11 @@ def check_and_remove_protection(machine):
                 snapshot_date = datetime(int(match.group(1)), int(match.group(2)), int(match.group(3)))
 
                 if snapshot_date < five_years_ago:
-                    command_check = f'proxmox-backup-client snapshot protected show vm/{machine}/{snapshot_id} --repository NAVIGATOR2'
+                    command_check = f'proxmox-backup-client snapshot protected show vm/{machine}/{snapshot_id} --repository XYZ'
                     result = subprocess.run(command_check, shell=True, capture_output=True, text=True)
 
                     if 'protected: true' in result.stdout:
-                        command_remove = f'proxmox-backup-client snapshot protected update vm/{machine}/{snapshot_id} false --repository NAVIGATOR2'
+                        command_remove = f'proxmox-backup-client snapshot protected update vm/{machine}/{snapshot_id} false --repository XYZ'
                         print(f"Running command to remove protection: {command_remove}")
                         subprocess.run(command_remove, shell=True)
                         os.system(f'echo vm/{machine}/{snapshot_id} >> /root/unprotected_backups_list')
